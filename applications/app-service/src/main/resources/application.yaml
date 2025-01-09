@@ -1,0 +1,44 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: "ProjectClient"
+  kafka:
+    bootstrap:
+      servers: "pkc-619z3.us-east1.gcp.confluent.cloud:9092"
+    topic:
+      test-in: "topic_0"
+      test-in-1: "topic_1"
+    security:
+      protocol: "SASL_SSL"
+    properties:
+      sasl:
+        jaas:
+          config: "org.apache.kafka.common.security.plain.PlainLoginModule required username='RR7LHKWTYNCM53Q4' password='2OVP9eHzpLXXHRNlCHSum2zunKbIqfi8G06OOtOUBQ7iA3uqY2HdmZAL41CTYioB';"
+        mechanism: "PLAIN"
+  devtools:
+    add-properties: false
+  h2:
+    console:
+      enabled: true
+      path: "/h2"
+  profiles:
+    include: null
+commons:
+  jms:
+    input-concurrency: 10
+    input-queue: "DEV.QUEUE.2"
+    input-queue-alias: ""
+    reactive: true
+    output-concurrency: 10
+    output-queue: "DEV.QUEUE.1"
+    producer-ttl: 0
+ibm:
+  mq:
+    conn-name: "127.0.0.1(1414)"
+    channel: "DEV.APP.SVRCONN"
+    user: "app"
+    password: "passw0rd"
+plain-text-pattern:
+  config:
+    files: "C:\\Users\\jespinosa\\Desktop\\proyectoClientes\\applications\\app-service\\src\\main\\resources\\pattern-config"

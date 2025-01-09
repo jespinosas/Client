@@ -1,0 +1,9 @@
+dependencies {
+    implementation project(':model')
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    implementation 'co.com.bancolombia:peq:2.0.0'
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    implementation project(path: ':transform-service')
+}

@@ -1,0 +1,26 @@
+pluginManagement {
+    repositories {
+        //mavenLocal()
+        //maven { url '...' }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'ProjectClient'
+
+include ':app-service'
+include ':model'
+include ':usecase'
+project(':app-service').projectDir = file('./applications/app-service')
+project(':model').projectDir = file('./domain/model')
+project(':usecase').projectDir = file('./domain/usecase')
+include ':k-stream-consumer'
+project(':k-stream-consumer').projectDir = file('./infrastructure/entry-points/k-stream-consumer')
+include ':k-stream-processor'
+project(':k-stream-processor').projectDir = file('./infrastructure/helpers/k-stream-processor')
+include ':mq-sender'
+project(':mq-sender').projectDir = file('./infrastructure/driven-adapters/mq-sender')
+include ':transform-service'
+project(':transform-service').projectDir = file('./infrastructure/helpers/transform-service')
+include ':validation-and-homologation-servica'
+project(':validation-and-homologation-servica').projectDir = file('./infrastructure/helpers/validation-and-homologation-servica')

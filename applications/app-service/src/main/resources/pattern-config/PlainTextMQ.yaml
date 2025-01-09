@@ -1,0 +1,41 @@
+name: PlainTextMQ
+requestModel:
+    - attribute: tipoID
+      length: 20
+      type: VALUE
+    - attribute: numeroID
+      length: 30
+      type: VALUE
+    - attribute: primerNombre
+      length: 50
+      type: VALUE
+    - attribute: segundoNombre
+      length: 50
+      type: VALUE
+    - attribute: primerApellido
+      length: 50
+      type: VALUE
+    - attribute: segundoApellido
+      length: 50
+      type: VALUE
+    - attribute: genero
+      length: 20
+      type: VALUE
+    - attribute: fechaNacimiento
+      length: 8
+      type: VALUE
+    - attribute: departamentoNacimiento
+      length: 20
+      type: VALUE
+    - attribute: paisNacimiento
+      length: 20
+      type: VALUE
+    - attribute: ciudadNacimiento
+      length: 20
+      type: VALUE
+    - attribute: tipoDocContacto
+      length: 20
+      type: VALUE
+    - attribute: numeroDocContacto
+      length: 30
+      type: VALUE

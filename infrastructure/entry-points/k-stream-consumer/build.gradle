@@ -1,0 +1,9 @@
+dependencies {
+    implementation project(':model')
+    implementation project(':usecase')
+    implementation 'org.springframework:spring-context'
+    implementation 'org.apache.kafka:kafka-streams:3.8.0'
+    implementation 'org.springframework.kafka:spring-kafka:3.0.10'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.2'
+    implementation project(path: ':k-stream-processor')
+}
