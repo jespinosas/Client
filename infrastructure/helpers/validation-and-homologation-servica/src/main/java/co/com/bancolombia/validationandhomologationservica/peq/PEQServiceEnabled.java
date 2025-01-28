@@ -28,6 +28,7 @@ public class PEQServiceEnabled implements PEQService {
     private final PEQConfigProperties properties;
     @Override
     public Mono<Map<String, String>> getRequestEquivalences(JsonNode request, PatternModel patternModel) {
+        System.out.println("entering getRequestEquivalences method");
         var criterios = patternModel.requestModel().stream().filter(
                 requestModel -> requestModel.getType().equals(HOMOLOGATION)
                         && request.at(((HomologatedJsonValue) requestModel).getAttribute()).textValue() != null)
@@ -35,6 +36,7 @@ public class PEQServiceEnabled implements PEQService {
                         new CriterioParametrizacion(((HomologatedJsonValue) requestModel).getTypology(),
                                 request.at(((HomologatedJsonValue) requestModel).getAttribute()).textValue()))
                 .toList();
+        System.out.println("criterios: " + criterios);
         if(criterios.isEmpty())
             return Mono.just(Map.of());
         var header = new EncabezadoHomologacion(properties.getOriginApplication(),properties.getDestinationApplication(),
@@ -42,13 +44,17 @@ public class PEQServiceEnabled implements PEQService {
 
         var peqRequest = PeqRequestData.builder()
                 .encabezadoHomologacion(header)
-                .criterioParametrizacion(criterios).build();
+                .criterioParametrizacion(criterios)
+                .messageId("59194eed-ea1f-42b3-84a5-9ccb530096ef")
+                .consumerId("NU0139001")
+                .build();
 
         return getPeqEquivalences(peqRequest);
 
     }
 
     private Mono<Map<String, String>> getPeqEquivalences(PeqRequestData request){
+        System.out.println("entering getPeqEquivalences method " + request);
         return equivalenceParameterizer.getParameterization(request)
                 .map(response -> response.stream().collect(Collectors.toMap(
                       result -> result.criterioParametrizacion().key(),

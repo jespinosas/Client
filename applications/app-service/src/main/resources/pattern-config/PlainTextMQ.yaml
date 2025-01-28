@@ -1,11 +1,16 @@
 name: PlainTextMQ
 requestModel:
-    - attribute: tipoID
+    - attribute: type
       length: 20
-      type: VALUE
+      type: HOMOLOGATION
+      fillDirection: LEFT
+      fillValue: " "
+      typology: TIPIDENT
     - attribute: numeroID
       length: 30
       type: VALUE
+      fillDirection: LEFT
+      fillValue: " "
     - attribute: primerNombre
       length: 50
       type: VALUE
@@ -22,7 +27,7 @@ requestModel:
       length: 20
       type: VALUE
     - attribute: fechaNacimiento
-      length: 8
+      length: 20
       type: VALUE
     - attribute: departamentoNacimiento
       length: 20

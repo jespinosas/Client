@@ -26,7 +26,7 @@ public class TransformService {
     public static String generateRequest(JsonNode json, List<ReqValue> attributeModels,
                                           Map<String, String> equivalences) {
 
-
+        System.out.println("json: " + json);
         return attributeModels.stream().map(attribute -> {
             return attribute instanceof ReqJsonValue
                     ? ((ReqJsonValue) attribute).getValue(json)

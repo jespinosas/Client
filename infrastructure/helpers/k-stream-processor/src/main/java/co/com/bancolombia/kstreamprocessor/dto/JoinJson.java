@@ -1,11 +1,14 @@
 package co.com.bancolombia.kstreamprocessor.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import lombok.Setter;
 
 @Setter
+@Getter
 public class JoinJson {
 
-    private String tipoID;
+    private String type;
     private String numeroID;
     private String primerNombre;
     private String segundoNombre;
@@ -13,7 +16,6 @@ public class JoinJson {
     private String segundoApellido;
     private String genero;
     private String fechaNacimiento;
-    private String departamentoNacimiento;
     private String paisNacimiento;
     private String ciudadNacimiento;
     private String tipoDocContacto;

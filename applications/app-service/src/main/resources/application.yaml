@@ -5,17 +5,12 @@ spring:
     name: "ProjectClient"
   kafka:
     bootstrap:
-      servers: "pkc-619z3.us-east1.gcp.confluent.cloud:9092"
+      servers: "localhost:9092,localhost:9093,localhost:9094"
     topic:
       test-in: "topic_0"
       test-in-1: "topic_1"
     security:
-      protocol: "SASL_SSL"
-    properties:
-      sasl:
-        jaas:
-          config: "org.apache.kafka.common.security.plain.PlainLoginModule required username='RR7LHKWTYNCM53Q4' password='2OVP9eHzpLXXHRNlCHSum2zunKbIqfi8G06OOtOUBQ7iA3uqY2HdmZAL41CTYioB';"
-        mechanism: "PLAIN"
+      protocol: "PLAINTEXT"
   devtools:
     add-properties: false
   h2:
@@ -42,3 +37,15 @@ ibm:
 plain-text-pattern:
   config:
     files: "C:\\Users\\jespinosa\\Desktop\\proyectoClientes\\applications\\app-service\\src\\main\\resources\\pattern-config"
+adapter:
+  peq:
+    url: "https://clientes-int-qa.apps.ambientesbc.com/clientes-integracion-qa/equivalences/peq"
+    #url: "${PEQ-URL:https://eqadapt-api-comercio-exterior-integracion.apps.ocpdes.ambientesbc.lab}"
+    timeout: 5000
+    cache:
+      expireAfter: 3600
+    header:
+      originApplication: "MDM-SINCRO_CLIENTES_KAFKA"
+      destinationApplication: "CIF-SINCRO_CLIENTES_KAFKA"
+      originSociety: "1000"
+      targetSociety: "1000"

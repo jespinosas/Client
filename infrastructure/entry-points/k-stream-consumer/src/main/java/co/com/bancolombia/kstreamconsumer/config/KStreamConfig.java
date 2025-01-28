@@ -27,17 +27,11 @@ public class KStreamConfig {
 
     private String bootstrapAddress;
     private String securityProtocol;
-    private String saslMechanism;
-    private String saslJaasConfig;
 
     public KStreamConfig(@Value(value = "${spring.kafka.bootstrap.servers}") String bootstrapAddress,
-                         @Value(value = "${spring.kafka.security.protocol}") String securityProtocol,
-                         @Value(value = "${spring.kafka.properties.sasl.mechanism}") String saslMechanism,
-                         @Value(value = "${spring.kafka.properties.sasl.jaas.config}") String saslJaasConfig) {
+                         @Value(value = "${spring.kafka.security.protocol}") String securityProtocol) {
         this.bootstrapAddress = bootstrapAddress;
         this.securityProtocol = securityProtocol;
-        this.saslMechanism = saslMechanism;
-        this.saslJaasConfig = saslJaasConfig;
     }
 
     @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
@@ -46,8 +40,6 @@ public class KStreamConfig {
 
         props.put(APPLICATION_ID_CONFIG, "kafka-stream-consume");
         props.put("security.protocol", securityProtocol);
-        props.put("sasl.mechanism", saslMechanism);
-        props.put("sasl.jaas.config", saslJaasConfig);
         props.put(BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, JsonObjectSerde.class);
@@ -70,8 +62,6 @@ public class KStreamConfig {
 
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put("security.protocol", securityProtocol);
-        props.put("sasl.mechanism", saslMechanism);
-        props.put("sasl.jaas.config", saslJaasConfig);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "consumer-1");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);

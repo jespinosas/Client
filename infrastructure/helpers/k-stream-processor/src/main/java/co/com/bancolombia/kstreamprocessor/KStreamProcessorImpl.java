@@ -11,6 +11,8 @@ import co.com.bancolombia.transformservice.config.PatternModel;
 
 
 import co.com.bancolombia.validationandhomologationservica.peq.config.PEQService;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,7 +39,21 @@ public class KStreamProcessorImpl implements KStreamProcessorGateway {
     private final PEQService peqService;
 
     @Override
-    public void process(KStream<String, BasicData> stream, KStream<String, ContactData> stream1) {
+    public Mono<Void> process(JoinJson joinJson) {
+
+        System.out.println("entering process method");
+        ObjectMapper om = new ObjectMapper();
+        om.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        JsonNode jsonNode = om.convertValue(joinJson, JsonNode.class);
+        PatternModel configModel = getPatternModel("PlainTextMQ");
+
+        generateApprovedRequest(jsonNode, configModel).flatMap(string -> {
+            System.out.println("String: " + string);
+
+            return this.mqGateway.send(string).then();
+        }).subscribe();
+
+        return Mono.empty();
 
         /*KTable<String, Object> basicDataTable = stream.toTable();
         KTable<String, Object> contactDataTable = stream1.toTable();*/
@@ -53,11 +69,10 @@ public class KStreamProcessorImpl implements KStreamProcessorGateway {
                     return aggregate;
                 }
         );*/
-        JoinJson joinJson = new JoinJson();
+        /*JoinJson joinJson = new JoinJson();
 
         stream.mapValues(value -> {
-            System.out.println("Value1: " + value.HUB_STATE_IND() + " " + value.CONSOLIDATION_IND() + " "
-            + value.NUMERO_DOCUMENTO());
+            System.out.println("Value1: " +  value.toString());
 
             joinJson.setTipoID(value.CD_TIPO_DOCUMENTO().string());
             joinJson.setNumeroID(value.NUMERO_DOCUMENTO().string());
@@ -67,9 +82,8 @@ public class KStreamProcessorImpl implements KStreamProcessorGateway {
             joinJson.setSegundoApellido(value.SEGUNDO_APELLIDO().string());
             joinJson.setGenero(value.CD_GENERO().string());
             joinJson.setFechaNacimiento(value.FECHA_NACIMIENTO().string());
-            joinJson.setDepartamentoNacimiento(value.CD_DEPARTAMENTO_NACIMIENTO());
             joinJson.setPaisNacimiento(value.CD_PAIS_NACIMIENTO().string());
-            joinJson.setCiudadNacimiento(value.CD_CIUDAD_NACIMIENTO().string());
+            joinJson.setCiudadNacimiento(value.CD_CIUDAD_NACIMIENTO().string());*/
 
             /*try {
                 BasicData basicData = om.readValue(om.writeValueAsString(value), BasicData.class);
@@ -79,7 +93,7 @@ public class KStreamProcessorImpl implements KStreamProcessorGateway {
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }*/
-            return null;
+         /*   return null;
         });
         stream1.mapValues(value -> {
 
@@ -91,15 +105,20 @@ public class KStreamProcessorImpl implements KStreamProcessorGateway {
                 joinJson.setTipoDocContacto(value.CD_TIPO_DOCUMENTO().string());
                 joinJson.setNumeroDocContacto(value.NUMERO_DOCUMENTO().string());
             }
-            JsonNode jsonNode = new ObjectMapper().convertValue(joinJson, JsonNode.class);
+            ObjectMapper om = new ObjectMapper();
+            om.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+            JsonNode jsonNode = om.convertValue(joinJson, JsonNode.class);
 
 
             //System.out.println("JoinJson: " + joinJson.getBasicData().getNUMERO_DOCUMENTO());
 
             return generateApprovedRequest(jsonNode, configModel).flatMap(string -> {
-                return this.mqGateway.send(string);
+                System.out.println("String: " + string);
+                this.mqGateway.send(string).subscribe();
+                return null;
             });
         });
+*/
 
         /*stream.join(stream1, (v1, v2) -> {
             System.out.println("v1: " + v1.toString());
@@ -154,10 +173,11 @@ public class KStreamProcessorImpl implements KStreamProcessorGateway {
     }
 
     private Mono<String> generateApprovedRequest (JsonNode request, PatternModel patternModel) {
+        System.out.println("Request: " + request);
 
         return peqService.getRequestEquivalences(request, patternModel)
                 .map(equivalence -> {
-
+                    System.out.println("Equivalence: " + equivalence);
                     var iastMessage = generateRequest(request ,patternModel.requestModel(), equivalence);
                     // will change to debug
 
