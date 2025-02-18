@@ -15,7 +15,7 @@ public class JsonUtils {
     public static String getValueJson(String attribute, JsonNode json, boolean optional) {
 
         var node = json.at(attribute);
-        if (node.isMissingNode() && !optional) {
+        if (node.isMissingNode() && optional) {
             return "";
         }
         if(node.isMissingNode()){

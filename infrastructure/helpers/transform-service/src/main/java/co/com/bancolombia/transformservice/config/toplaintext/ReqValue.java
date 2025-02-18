@@ -18,11 +18,7 @@ import static co.com.bancolombia.transformservice.config.utils.FillDirection.RIG
         @JsonSubTypes.Type(value = ValueReqJsonValue.class, name = "VALUE"),
         @JsonSubTypes.Type(value = NumericReqJsonValue.class, name = "NUMBER"),
         @JsonSubTypes.Type(value = DateReqJsonValue.class, name = "DATE"),
-        @JsonSubTypes.Type(value = ConstantJsonValueReq.class, name = "CONSTANT"),
-        @JsonSubTypes.Type(value = GeneratedJsonValueReq.class, name = "GENERATED"),
-        @JsonSubTypes.Type(value = ExpressionReqJsonValue.class, name = "EXPRESSION"),
-        @JsonSubTypes.Type(value = HomologatedJsonValue.class, name = "HOMOLOGATION"),
-        @JsonSubTypes.Type(value = ArrayReqJsonValue.class, name = "ARRAY")
+        @JsonSubTypes.Type(value = HomologatedJsonValue.class, name = "HOMOLOGATION")
 
 })
 public abstract class ReqValue {

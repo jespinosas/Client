@@ -40,12 +40,15 @@ public class KStreamConsumer {
     public Mono<Void> consume(StreamsBuilder streamsBuilder) {
 
         JoinJson joinJson = new JoinJson();
+        String contactDataKey = "";
 
-        streamsBuilder.stream(inputTopic1, Consumed.with(Serdes.String(), new ContactDataSerde()))
+         KStream<String, ContactData> streamContactData =
+                 streamsBuilder.stream(inputTopic1, Consumed.with(Serdes.String(), new ContactDataSerde()))
                 .mapValues(value1 -> {
                     System.out.println("Value1: " + value1);
                     joinJson.setTipoDocContacto(value1.CD_TIPO_DOCUMENTO().string());
                     joinJson.setNumeroDocContacto(value1.NUMERO_DOCUMENTO().string());
+                    contactDataKey = value1.LLAVE_MDM();
 
                     return null;
                 })
@@ -65,6 +68,10 @@ public class KStreamConsumer {
                             joinJson.setFechaNacimiento(value.FECHA_NACIMIENTO().string());
                             joinJson.setPaisNacimiento(value.CD_PAIS_NACIMIENTO().string());
                             joinJson.setCiudadNacimiento(value.CD_CIUDAD_NACIMIENTO().string());
+
+                            if(!contactDataKey.equals(value.LLAVE_MDM().string())) {
+                                joinJson.setTipoDocContacto("");
+                            }
 
                             this.kProcessorGateway.process(joinJson);
                             return joinJson;

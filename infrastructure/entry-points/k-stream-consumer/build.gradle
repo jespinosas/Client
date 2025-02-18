@@ -6,4 +6,5 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka:3.0.10'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.2'
     implementation project(path: ':k-stream-processor')
+    testImplementation 'org.apache.kafka:kafka-streams-test-utils:3.9.0'
 }
